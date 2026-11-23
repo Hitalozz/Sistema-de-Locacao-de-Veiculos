@@ -1,0 +1,123 @@
+{
+  "marcas": [
+    {
+      "id": "1",
+      "nome": "Porsche"
+    },
+    {
+      "id": "2",
+      "nome": "Toyota"
+    },
+    {
+      "id": "3",
+      "nome": "Volkswagen"
+    }
+  ],
+  "categorias": [
+    {
+      "id": "1",
+      "nome": "Esportivo",
+      "valorLocacao": 890
+    },
+    {
+      "id": "2",
+      "nome": "SUV",
+      "valorLocacao": 240
+    },
+    {
+      "id": "3",
+      "nome": "Econômico",
+      "valorLocacao": 120
+    }
+  ],
+  "modelos": [
+    {
+      "id": "1",
+      "nome": "911 Carrera",
+      "ano": 1987,
+      "marcaId": "1",
+      "categoriaId": "1"
+    },
+    {
+      "id": "2",
+      "nome": "Corolla Cross",
+      "ano": 2024,
+      "marcaId": "2",
+      "categoriaId": "2"
+    },
+    {
+      "id": "3",
+      "nome": "Polo",
+      "ano": 2025,
+      "marcaId": "3",
+      "categoriaId": "3"
+    }
+  ],
+  "veiculos": [
+    {
+      "id": "1",
+      "modeloId": "1",
+      "cor": "Laranja",
+      "anoFabricacao": 1987,
+      "placa": "CUR1A01",
+      "chassi": "9BWZZZ377VT004250",
+      "kmRodado": 51300
+    },
+    {
+      "id": "2",
+      "modeloId": "2",
+      "cor": "Prata",
+      "anoFabricacao": 2024,
+      "placa": "CUR2B02",
+      "chassi": "9BWZZZ377VT004251",
+      "kmRodado": 24000
+    },
+    {
+      "id": "3",
+      "modeloId": "3",
+      "cor": "Branco",
+      "anoFabricacao": 2025,
+      "placa": "CUR3C03",
+      "chassi": "9BWZZZ377VT004252",
+      "kmRodado": 12500
+    }
+  ],
+  "clientes": [
+    {
+      "id": "1",
+      "nome": "Lia Prado",
+      "cpf": "00000000000",
+      "cnh": "10000000000",
+      "validadeCnh": "2030-01-01",
+      "telefone": "62000000000",
+      "email": "cliente1@example.com",
+      "endereco": "Rua Exemplo, 1"
+    },
+    {
+      "id": "2",
+      "nome": "Caio Lima",
+      "cpf": "00000000001",
+      "cnh": "10000000001",
+      "validadeCnh": "2030-01-01",
+      "telefone": "62000000001",
+      "email": "cliente2@example.com",
+      "endereco": "Rua Exemplo, 2"
+    },
+    {
+      "id": "3",
+      "nome": "Rita Vale",
+      "cpf": "00000000002",
+      "cnh": "10000000002",
+      "validadeCnh": "2030-01-01",
+      "telefone": "62000000002",
+      "email": "cliente3@example.com",
+      "endereco": "Rua Exemplo, 3"
+    }
+  ],
+  "manutencoes": [],
+  "locacoes": [],
+  "contratos": [],
+  "vistorias": [],
+  "pagamentos": [],
+  "notasFiscais": []
+}
