@@ -1,3 +1,4 @@
+import { saldoRestante } from '../../service/pagamentoService'
 import { NotaDaLocacao } from './NotaDaLocacao'
 import { Pagamentos } from './Pagamentos'
 import { VistoriaRetirada } from './VistoriaRetirada'
@@ -253,7 +254,22 @@ function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
     veiculo && pedido.retirada && pedido.devolucaoPrevista && total === undefined,
   )
 
-  const lista = [...dados.locacoes].reverse()
+  const [clienteFiltro, setClienteFiltro] = useState('')
+  const [situacaoFiltro, setSituacaoFiltro] = useState('')
+  const lista = [...dados.locacoes].reverse().map(locacao => {
+    const vistorias = dados.vistorias.filter(v => v.locacaoId === locacao.id)
+    let situacao = 'Reservada'
+    if (locacao.status === 'cancelada') {
+      situacao = 'Cancelada'
+    } else if (vistorias.some(v => v.tipo === 'devolucao')) {
+      const pagamentos = dados.pagamentos.filter(p => p.locacaoId === locacao.id)
+      situacao = saldoRestante(locacao.valorPrevisto, pagamentos) <= 0 ? 'Concluída' : 'Aguardando pagamento'
+    } else if (vistorias.some(v => v.tipo === 'retirada')) {
+      situacao = 'Em andamento'
+    }
+    return {locacao, situacao}
+  }).filter(({locacao, situacao}) =>
+    (!clienteFiltro || locacao.clienteId === clienteFiltro) && (!situacaoFiltro || situacao === situacaoFiltro))
 
   /* ---- Ações ---- */
 
@@ -549,7 +565,15 @@ function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
             <span className="lf-contador">{lista.length}</span>
           </div>
 
-          {lista.length === 0 ? (
+          <div className="row align-items-end mb-3">
+            <div className="col-md-5"><Select name="filtro-cliente" label="Cliente" value={clienteFiltro} onChange={setClienteFiltro}
+              options={opcoesClientes} vazio="Todos os clientes"/></div>
+            <div className="col-md-5"><Select name="filtro-situacao" label="Situação" value={situacaoFiltro} onChange={setSituacaoFiltro}
+              options={['Reservada','Em andamento','Aguardando pagamento','Concluída','Cancelada'].map(label => ({label,value:label}))} vazio="Todas as situações"/></div>
+            <div className="col-md-2 mb-3"><Button label="Limpar filtros" variant="secondary" disabled={!clienteFiltro && !situacaoFiltro}
+              onClick={() => {setClienteFiltro(''); setSituacaoFiltro('')}}/></div>
+          </div>
+          {lista.length === 0 && dados.locacoes.length > 0 ? <p role="status">Nenhuma locação corresponde aos filtros.</p> : lista.length === 0 ? (
             <div className="lf-vazio">
               <IconeCarro />
               <p>Nenhuma locação registrada ainda.</p>
@@ -557,7 +581,7 @@ function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
             </div>
           ) : (
             <ul className="lf-itens">
-              {lista.map((l) => {
+              {lista.map(({locacao:l, situacao}) => {
                 const cliente = dados.clientes.find((c) => c.id === l.clienteId)?.nome ?? 'Cliente removido'
                 const calculo = calcular(
                   {
@@ -579,7 +603,7 @@ function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
                     </span>
 
                     <div className="lf-item-info">
-                      <strong>{cliente}</strong>
+                      <strong>{cliente}</strong><span>{situacao}</span>
                       <span>
                         {placa}
                         {nomeModelo ? ` · ${nomeModelo}` : ''}
@@ -606,6 +630,7 @@ function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
     </main>
   )
 }
+
 
 
 
