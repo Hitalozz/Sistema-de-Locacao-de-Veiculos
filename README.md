@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚗 MEGA MOTORS
+#  MEGA MOTORS
 
 ### Sistema de Locação de Veículos
 
@@ -17,7 +17,7 @@ Aplicação web para gerenciar uma locadora: frota, clientes e todo o ciclo de l
 
 ---
 
-## 👤 Autor
+##  Autor
 
 **Hitalo Augusto Lourenço Guedes**
 Ciência da Computação · PUC Goiás
@@ -30,7 +30,7 @@ Atividade de laboratório: Sistema de Locação de Veículos (React · TypeScrip
 ---
 
 
-## 📌 Status do projeto
+##  Status do projeto
 
 O projeto está sendo construído **passo a passo**. Esta é a **Etapa 1: a tela inicial (Home)**, já consumindo dados reais da API.
 
@@ -44,7 +44,7 @@ O projeto está sendo construído **passo a passo**. Esta é a **Etapa 1: a tela
 
 ---
 
-## ✨ O que tem na Home
+##  O que tem na Home
 
 - **Preloader "Largada":** um velocímetro com o ponteiro tremendo em marcha lenta e o nome da marca se enchendo conforme o progresso. Quando os dados chegam, o ponteiro pisa fundo, estoura a zona vermelha, a tela dá um flash e as duas metades se abrem.
 - **Hero imersivo:** o título "MEGA MOTORS" entra letra por letra. Ao rolar, o hero fica fixo (pin) enquanto o carro cresce em direção à tela e o título some atrás dele.
@@ -55,7 +55,7 @@ O projeto está sendo construído **passo a passo**. Esta é a **Etapa 1: a tela
 - **Acessível:** respeita `prefers-reduced-motion` (sem pin, sem tremor, sem transições longas), com título legível por leitores de tela e imagens com `alt`.
 
 
-## 🛠️ Tecnologias
+##  Tecnologias
 
 | Tecnologia | Uso no projeto |
 | --- | --- |
@@ -69,7 +69,7 @@ O projeto está sendo construído **passo a passo**. Esta é a **Etapa 1: a tela
 
 ---
 
-## 🚀 Como executar
+##  Como executar
 
 **Pré-requisito:** Node.js 20 ou superior.
 
@@ -155,7 +155,7 @@ locadora-veiculos/
 
 ---
 
-## 🧩 Modelo de dados (resumo)
+##  Modelo de dados (resumo)
 
 ```
 Marca ──1:N──► Modelo ◄──N:1── Categoria (define o valor da diária)
@@ -200,7 +200,7 @@ O `db.json` já traz uma coleção para cada entidade, em `camelCase` e com chav
 
 ---
 
-## 🧭 Roadmap
+##  Roadmap
 
 1. Cadastros de **marcas**, **categorias** e **modelos**, com `Select` de marca e categoria.
 2. Cadastros de **veículos**, **manutenções** e **clientes**, com validação de placa, chassi, CPF e CNH únicos.
@@ -210,7 +210,7 @@ O `db.json` já traz uma coleção para cada entidade, em `camelCase` e com chav
 
 ---
 
-## 📝 Histórico de commits
+##  Histórico de commits
 
 O desenvolvimento segue commits pequenos, no padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/):
 
