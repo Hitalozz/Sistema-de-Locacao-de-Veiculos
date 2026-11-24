@@ -2,22 +2,40 @@
   "marcas": [
     {
       "id": "1",
-      "nome": "Porsche"
+      "nome": "Porsche",
+      "logo": "./logo-marcas/porsche.png"
     },
     {
       "id": "2",
-      "nome": "Toyota"
+      "nome": "Toyota",
+      "logo": "./logo-marcas/toyota.png"
     },
     {
       "id": "3",
-      "nome": "Volkswagen"
+      "nome": "Volkswagen",
+      "logo": "./logo-marcas/volkswagen.png"
+    },
+    {
+      "id": "83da5a20-8194-4eb5-a6c4-9abb2c297c9d",
+      "nome": "Fiat",
+      "logo": "./logo-marcas/fiat.png"
+    },
+    {
+      "id": "b6cc6872-c165-49cd-9e8d-9b86583dc383",
+      "nome": "Ford",
+      "logo": "./logo-marcas/ford.png"
+    },
+    {
+      "id": "cce0c5a2-e1dc-450a-a634-ef10d4fe1442",
+      "logo": "./logo-marcas/byd.png",
+      "nome": "BYD"
     }
   ],
   "categorias": [
     {
       "id": "1",
       "nome": "Esportivo",
-      "valorLocacao": 890
+      "valorLocacao": 850
     },
     {
       "id": "2",
@@ -27,7 +45,7 @@
     {
       "id": "3",
       "nome": "Econômico",
-      "valorLocacao": 120
+      "valorLocacao": 180
     }
   ],
   "modelos": [
@@ -51,26 +69,49 @@
       "ano": 2025,
       "marcaId": "3",
       "categoriaId": "3"
+    },
+    {
+      "nome": "Cayenne",
+      "ano": 2027,
+      "marcaId": "1",
+      "categoriaId": "2",
+      "id": "8a8961a5-8d48-48fa-bcb2-8b366971e0e7"
+    },
+    {
+      "nome": "Uno",
+      "ano": 2006,
+      "marcaId": "83da5a20-8194-4eb5-a6c4-9abb2c297c9d",
+      "categoriaId": "3",
+      "id": "e3cce949-4f5c-40f4-ad54-c24cc8af8a68"
+    },
+    {
+      "nome": "Dolphin",
+      "ano": 2025,
+      "marcaId": "cce0c5a2-e1dc-450a-a634-ef10d4fe1442",
+      "categoriaId": "2",
+      "id": "cb7f7c96-cfa1-4fd4-86c3-0606bb2e5f4f"
     }
   ],
   "veiculos": [
     {
       "id": "1",
       "modeloId": "1",
-      "cor": "Laranja",
-      "anoFabricacao": 1987,
+      "cor": "Prata",
+      "anoFabricacao": 2026,
       "placa": "CUR1A01",
       "chassi": "9BWZZZ377VT004250",
-      "kmRodado": 51300
+      "kmRodado": 1300,
+      "foto": "/src/assets/frota/911Carrera.png"
     },
     {
       "id": "2",
       "modeloId": "2",
-      "cor": "Prata",
+      "cor": "Braca",
       "anoFabricacao": 2024,
       "placa": "CUR2B02",
       "chassi": "9BWZZZ377VT004251",
-      "kmRodado": 24000
+      "kmRodado": 4000,
+      "foto": "/src/assets/frota/CorollaCross.png"
     },
     {
       "id": "3",
@@ -79,23 +120,44 @@
       "anoFabricacao": 2025,
       "placa": "CUR3C03",
       "chassi": "9BWZZZ377VT004252",
-      "kmRodado": 12500
+      "kmRodado": 12500,
+      "foto": "/src/assets/frota/Polo.png"
+    },
+    {
+      "placa": "NGM1332",
+      "chassi": "9BWZZZ377VT004253",
+      "cor": "Branco",
+      "modeloId": "e3cce949-4f5c-40f4-ad54-c24cc8af8a68",
+      "anoFabricacao": 2006,
+      "kmRodado": 20000,
+      "id": "b84b80e4-08e9-474b-97e7-9c6ee10c45e7",
+      "foto": "/frota/fiatuno.png"
+    },
+    {
+      "foto": "/src/assets/frota/Byd.png",
+      "placa": "ADC2D34",
+      "chassi": "9BWWWZ377VT004540",
+      "cor": "Azul",
+      "modeloId": "cb7f7c96-cfa1-4fd4-86c3-0606bb2e5f4f",
+      "anoFabricacao": 2025,
+      "kmRodado": 15200,
+      "id": "d093f39b-a9d0-42c4-8639-f428a3a93137"
     }
   ],
   "clientes": [
     {
       "id": "1",
-      "nome": "Lia Prado",
-      "cpf": "00000000000",
+      "nome": "Hitalo Augusto",
+      "cpf": "71402834171",
       "cnh": "10000000000",
       "validadeCnh": "2030-01-01",
-      "telefone": "62000000000",
-      "email": "cliente1@example.com",
+      "telefone": "62986223964",
+      "email": "hitaloguedes07@gmail.com",
       "endereco": "Rua Exemplo, 1"
     },
     {
       "id": "2",
-      "nome": "Caio Lima",
+      "nome": "Sophia Ellen",
       "cpf": "00000000001",
       "cnh": "10000000001",
       "validadeCnh": "2030-01-01",
@@ -105,17 +167,96 @@
     },
     {
       "id": "3",
-      "nome": "Rita Vale",
+      "nome": "Gabriel Fonseca",
       "cpf": "00000000002",
       "cnh": "10000000002",
       "validadeCnh": "2030-01-01",
       "telefone": "62000000002",
       "email": "cliente3@example.com",
       "endereco": "Rua Exemplo, 3"
+    },
+    {
+      "nome": "Julia Souza",
+      "cpf": "00000000004",
+      "cnh": "10000000007",
+      "validadeCnh": "2032-11-24",
+      "telefone": "62935757266",
+      "email": "julia@gmail.com",
+      "endereco": "Av Rita Caetano Quadra 23 Lote 02",
+      "id": "bc32ea18-02bf-4f91-91bf-5689aeaf32ed"
+    },
+    {
+      "nome": "Gerson Abdu",
+      "cpf": "00000100002",
+      "cnh": "10000500000",
+      "validadeCnh": "2029-07-09",
+      "telefone": "62988774455",
+      "email": "gerson@gmail.com",
+      "endereco": "rua 02",
+      "id": "f4882a79-8fdc-44fe-8069-79808bf19f42"
     }
   ],
-  "manutencoes": [],
-  "locacoes": [],
+  "manutencoes": [
+    {
+      "veiculoId": "b84b80e4-08e9-474b-97e7-9c6ee10c45e7",
+      "descricao": "Troca de óleo",
+      "data": "2026-11-25",
+      "valor": 100,
+      "id": "ec935bb7-909a-4428-b08c-e800d1c408ec"
+    }
+  ],
+  "locacoes": [
+    {
+      "clienteId": "2",
+      "veiculoId": "b84b80e4-08e9-474b-97e7-9c6ee10c45e7",
+      "retirada": "2026-11-24",
+      "devolucaoPrevista": "2026-11-25",
+      "id": "bbfb9d3e-09c2-47d1-a084-57a3547d8af4",
+      "valorDiaria": 180,
+      "valorPrevisto": 180,
+      "status": "reservada"
+    },
+    {
+      "clienteId": "1",
+      "veiculoId": "1",
+      "retirada": "2026-11-24",
+      "devolucaoPrevista": "2026-11-25",
+      "id": "5c4945a9-6932-42c2-900c-4e069e12b1a2",
+      "valorDiaria": 850,
+      "valorPrevisto": 850,
+      "status": "reservada"
+    },
+    {
+      "clienteId": "bc32ea18-02bf-4f91-91bf-5689aeaf32ed",
+      "veiculoId": "2",
+      "retirada": "2026-11-25",
+      "devolucaoPrevista": "2026-11-28",
+      "id": "001a6ebb-970e-4d39-a48f-bb3410ee9980",
+      "valorDiaria": 240,
+      "valorPrevisto": 720,
+      "status": "reservada"
+    },
+    {
+      "clienteId": "3",
+      "veiculoId": "3",
+      "retirada": "2026-11-27",
+      "devolucaoPrevista": "2026-11-30",
+      "id": "70976c34-2951-4957-bbdd-80d4ce1bd87b",
+      "valorDiaria": 180,
+      "valorPrevisto": 540,
+      "status": "reservada"
+    },
+    {
+      "clienteId": "f4882a79-8fdc-44fe-8069-79808bf19f42",
+      "veiculoId": "d093f39b-a9d0-42c4-8639-f428a3a93137",
+      "retirada": "2026-11-27",
+      "devolucaoPrevista": "2026-12-25",
+      "id": "29fd70d6-1ffb-472c-b43b-57d121d2d9d2",
+      "valorDiaria": 240,
+      "valorPrevisto": 6720,
+      "status": "reservada"
+    }
+  ],
   "contratos": [],
   "vistorias": [],
   "pagamentos": [],

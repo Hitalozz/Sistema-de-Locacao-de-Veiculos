@@ -1,3 +1,4 @@
+import { Locacoes } from './pages/locacoes/Locacoes'
 import { ClienteList } from './pages/clientes/ClienteList'
 import { ManutencaoList } from './pages/manutencoes/ManutencaoList'
 import { VeiculoList } from './pages/veiculos/VeiculoList'
@@ -20,10 +21,11 @@ export default function App() {
     <Route path="/veiculos" element={<VeiculoList />} />
     <Route path="/modelos" element={<ModeloList />} />
     <Route path="/marcas" element={<MarcaList />} />
-    {modules.filter(([path]) => path !== 'clientes' && path !== 'manutencoes' && path !== 'marcas' && path !== 'categorias' && path !== 'modelos' && path !== 'veiculos').map(([path,title]) => <Route key={path} path={path} element={<Placeholder title={title} />} />)}
+    {modules.filter(([path]) => path !== 'clientes' && path !== 'manutencoes' && path !== 'marcas' && path !== 'categorias' && path !== 'modelos' && path !== 'veiculos').map(([path,title]) => <Route key={path} path={path} element={path === 'locacoes' ? <Locacoes/> : <Placeholder title={title} />} />)}
     <Route path="*" element={<main className="container py-5"><h1>Página não encontrada</h1><Link to="/">Voltar ao início</Link></main>} />
   </Routes></>
 }
+
 
 
 

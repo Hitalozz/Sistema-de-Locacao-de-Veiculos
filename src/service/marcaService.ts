@@ -15,12 +15,12 @@ export const marcaService = {
   async buscarPorId(id: string): Promise<Marca> {
     return (await api.get<Marca>(`/marcas/${encodeURIComponent(id)}`)).data
   },
-  async criar(marca: Pick<Marca, 'nome'>): Promise<Marca> {
-    const nova = { id: crypto.randomUUID(), nome: nomeValido(marca.nome) }
+  async criar(marca: Pick<Marca, 'nome' | 'logo'>): Promise<Marca> {
+    const nova = { id: crypto.randomUUID(), logo: marca.logo, nome: nomeValido(marca.nome) }
     return (await api.post<Marca>('/marcas', nova)).data
   },
-  async atualizar(id: string, marca: Pick<Marca, 'nome'>): Promise<Marca> {
-    const dados = { nome: nomeValido(marca.nome) }
+  async atualizar(id: string, marca: Pick<Marca, 'nome' | 'logo'>): Promise<Marca> {
+    const dados = { logo: marca.logo, nome: nomeValido(marca.nome) }
     return (await api.patch<Marca>(`/marcas/${encodeURIComponent(id)}`, dados)).data
   },
   async excluir(id: string): Promise<void> {
@@ -29,3 +29,4 @@ export const marcaService = {
     await api.delete(`/marcas/${encodeURIComponent(id)}`)
   },
 }
+

@@ -1,4 +1,5 @@
 export interface Veiculo {
+  foto?: string
   id: string
   placa: string
   chassi: string
@@ -16,3 +17,4 @@ export const veiculoInicial: Veiculo = {
   kmRodado: 0,
   modeloId: '',
 }
+

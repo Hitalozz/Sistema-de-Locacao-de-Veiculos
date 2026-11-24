@@ -31,11 +31,11 @@ export function MarcaList() {
     return () => controller.abort()
   }, [tentativa])
 
-  async function salvar(nome: string) {
+  async function salvar(nome: string, logo: string) {
     if (!form || ocupado) return
     setOcupado(true)
     try {
-      const salva = form.id ? await marcaService.atualizar(form.id,{nome}) : await marcaService.criar({nome})
+      const salva = form.id ? await marcaService.atualizar(form.id,{nome,logo}) : await marcaService.criar({nome,logo})
       setMarcas(lista => form.id ? lista.map(m => m.id === salva.id ? salva : m) : [...lista,salva])
       setForm(null)
       setAviso({type:'success',message:'Marca salva.'})
@@ -73,3 +73,4 @@ export function MarcaList() {
       onClose={() => setExclusao(null)} onConfirm={excluir} />
   </main>
 }
+
