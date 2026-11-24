@@ -1,0 +1,5 @@
+.mega-contrato {position:fixed;inset:0;margin:auto;width:min(36rem,94vw);max-height:88vh;overflow:auto;border:0;border-radius:1rem;padding:clamp(1.25rem,4vw,2rem);color:var(--mega-ink);background:white}
+.mega-contrato::backdrop {background:rgba(8,32,47,.65)}
+.mega-contrato header {border-bottom:3px solid var(--mega-accent);overflow-wrap:anywhere}
+.mega-contrato dl {display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1rem;margin:1.5rem 0}
+.mega-contrato dd {margin:0;overflow-wrap:anywhere}
