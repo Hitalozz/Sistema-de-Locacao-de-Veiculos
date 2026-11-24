@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -30,12 +31,28 @@ interface Catalogo {
   veiculos: Veiculo[]
 }
 
+interface Destaque {
+  veiculo: Veiculo
+  titulo: string
+  categoria?: Categoria
+}
+
+interface Etapa {
+  titulo: string
+  descricao: string
+}
+
+const TEMPO_MINIMO_PRELOADER_MS = 850
+const QUANTIDADE_DESTAQUES = 3
+const QUERY_SEM_MOVIMENTO = '(prefers-reduced-motion: reduce)'
+const QUERY_COM_MOVIMENTO = '(prefers-reduced-motion: no-preference)'
+
 const moeda = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
 })
 
-const etapas = [
+const etapas: Etapa[] = [
   {
     titulo: 'Retirada',
     descricao: 'Escolha o veículo e combine as datas de saída e retorno.',
@@ -54,37 +71,46 @@ const etapas = [
   },
 ]
 
-export function Home() {
-  const root = useRef<HTMLDivElement>(null)
-  const navigate = useNavigate()
 
+/* Funções auxiliares                                                  */
+
+// Rola até a seção com animação suave, respeitando quem prefere menos movimento.
+function rolarPara(id: string): void {
+  const reduzido = window.matchMedia(QUERY_SEM_MOVIMENTO).matches
+
+  document.getElementById(id)?.scrollIntoView({
+    behavior: reduzido ? 'auto' : 'smooth',
+    block: 'start',
+  })
+}
+
+// As letras usam <i> (e não <span>) para não herdar o `.mega-title span` do CSS,
+// que força display: block e tamanhos de fonte por palavra.
+const ESTILO_LETRA: CSSProperties = { display: 'inline-block', fontStyle: 'normal' }
+
+function Letras({ texto }: { texto: string }) {
+  return (
+    <>
+      {[...texto].map((letra, indice) => (
+        <i className="mega-letter" style={ESTILO_LETRA} key={`${letra}-${indice}`}>
+          {letra}
+        </i>
+      ))}
+    </>
+  )
+}
+
+// Busca os dados da API (via services) e controla erro e nova tentativa.
+function useCatalogo() {
   const [catalogo, setCatalogo] = useState<Catalogo | null>(null)
   const [erro, setErro] = useState(false)
   const [tentativa, setTentativa] = useState(0)
-  const [tempoMinimoConcluido, setTempoMinimoConcluido] = useState(false)
-  const [homeVisivel, setHomeVisivel] = useState(false)
-
-  const finalizarPreloader = useCallback(() => {
-    setHomeVisivel(true)
-  }, [])
-
-  useEffect(() => {
-    const movimentoReduzido = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches
-
-    const timer = window.setTimeout(() => {
-      setTempoMinimoConcluido(true)
-    }, movimentoReduzido ? 0 : 850)
-
-    return () => window.clearTimeout(timer)
-  }, [])
 
   useEffect(() => {
     const controller = new AbortController()
     const { signal } = controller
 
-    async function carregarCatalogo() {
+    async function carregar() {
       try {
         const [marcas, categorias, modelos, veiculos] = await Promise.all([
           marcaService.listar(signal),
@@ -103,42 +129,119 @@ export function Home() {
       }
     }
 
-    void carregarCatalogo()
+    void carregar()
 
     return () => controller.abort()
   }, [tentativa])
 
-  // O título e o BMW entram quando a cortina do preloader termina.
+  const tentarNovamente = useCallback(() => {
+    setErro(false)
+    setTentativa((anterior) => anterior + 1)
+  }, [])
+
+  return { catalogo, erro, tentarNovamente }
+}
+
+/* ------------------------------------------------------------------ */
+/* Página                                                              */
+/* ------------------------------------------------------------------ */
+
+export function Home() {
+  const root = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
+
+  const { catalogo, erro, tentarNovamente } = useCatalogo()
+  const [tempoMinimoConcluido, setTempoMinimoConcluido] = useState(false)
+  const [homeVisivel, setHomeVisivel] = useState(false)
+  const [preloaderAtivo, setPreloaderAtivo] = useState(true)
+
+  // O hero começa a animar quando as cortinas começam a abrir (ainda por baixo delas)...
+  const revelarHome = useCallback(() => {
+    setHomeVisivel(true)
+  }, [])
+
+  // ...e o preloader só sai da tela quando a animação dele termina de vez.
+  const removerPreloader = useCallback(() => {
+    setPreloaderAtivo(false)
+  }, [])
+
+  // Garante que o preloader fique um tempo mínimo na tela (zero se movimento reduzido).
+  useEffect(() => {
+    const reduzido = window.matchMedia(QUERY_SEM_MOVIMENTO).matches
+
+    const timer = window.setTimeout(
+      () => setTempoMinimoConcluido(true),
+      reduzido ? 0 : TEMPO_MINIMO_PRELOADER_MS,
+    )
+
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  // Relaciona veículo → modelo → marca/categoria uma única vez por carga de dados.
+  const destaques = useMemo<Destaque[]>(() => {
+    if (!catalogo) return []
+
+    const marcas = new Map(catalogo.marcas.map((m) => [m.id, m] as const))
+    const modelos = new Map(catalogo.modelos.map((m) => [m.id, m] as const))
+    const categorias = new Map(
+      catalogo.categorias.map((c) => [c.id, c] as const),
+    )
+
+    return catalogo.veiculos.slice(0, QUANTIDADE_DESTAQUES).map((veiculo) => {
+      const modelo = modelos.get(veiculo.modeloId)
+      const marca = marcas.get(modelo?.marcaId)
+      const categoria = categorias.get(modelo?.categoriaId)
+
+      const titulo =
+        [marca?.nome, modelo?.nome].filter(Boolean).join(' ') || veiculo.placa
+
+      return { veiculo, titulo, categoria }
+    })
+  }, [catalogo])
+
+  // Hero: entrada (letras, carro e botões) quando a cortina do preloader termina
+  // e saída com scroll (o hero fica fixo enquanto o carro avança para a tela).
   useGSAP(
     () => {
       if (!homeVisivel) return
 
       const media = gsap.matchMedia()
 
-      media.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.timeline()
-          .from('.mega-title span', {
+      media.add(QUERY_COM_MOVIMENTO, () => {
+        // Entrada: letras do título em sequência, depois o carro e os botões.
+        gsap
+          .timeline()
+          .from('.mega-letter', {
             opacity: 0,
-            y: 18,
-            duration: 0.5,
-            stagger: 0.08,
-            ease: 'power2.out',
+            y: 48,
+            duration: 0.6,
+            stagger: 0.05,
+            ease: 'power3.out',
           })
           .from(
             '.mega-poster',
-            {
-              opacity: 0,
-              scale: 0.98,
-              duration: 0.65,
-              ease: 'power2.out',
+            { opacity: 0, y: 40, duration: 0.8, ease: 'power3.out' },
+            0.25,
+          )
+          .from('.mega-actions', { opacity: 0, y: 10, duration: 0.4 }, 0.6)
+
+        // Saída: o hero fica fixo (pin) enquanto o carro cresce em direção à tela
+        // e o título some atrás dele. A entrada usa opacity/y e a saída usa scale,
+        // assim as duas animações nunca disputam a mesma propriedade.
+        gsap
+          .timeline({
+            defaults: { ease: 'none' },
+            scrollTrigger: {
+              trigger: '.mega-stage',
+              start: 'top top',
+              end: '+=60%',
+              scrub: 0.6,
+              pin: true,
+              anticipatePin: 1,
             },
-            0.1,
-          )
-          .from(
-            '.mega-actions',
-            { opacity: 0, y: 10, duration: 0.4 },
-            0.35,
-          )
+          })
+          .to('.mega-poster', { scale: 1.6, transformOrigin: '50% 80%' }, 0)
+          .to('.mega-title', { opacity: 0 }, 0.3)
       })
 
       return () => media.revert()
@@ -150,24 +253,32 @@ export function Home() {
     },
   )
 
-  // Cada seção aparece ao entrar na área visível do navegador.
+  // Seções aparecem ao entrar na tela; grupos (cards, diárias, etapas) entram em sequência.
   useGSAP(
     () => {
       if (!homeVisivel) return
 
       const media = gsap.matchMedia()
 
-      media.add('(prefers-reduced-motion: no-preference)', () => {
+      media.add(QUERY_COM_MOVIMENTO, () => {
         const secoes = root.current?.querySelectorAll<HTMLElement>('.reveal')
 
         secoes?.forEach((secao) => {
-          gsap.from(secao, {
+          const itens = secao.querySelectorAll<HTMLElement>('.reveal-item')
+          const titulo = secao.querySelector<HTMLElement>('h2')
+
+          const alvos: HTMLElement[] =
+            itens.length > 0 ? [...(titulo ? [titulo] : []), ...itens] : [secao]
+
+          gsap.from(alvos, {
             opacity: 0,
             y: 22,
             duration: 0.55,
+            stagger: 0.1,
+            ease: 'power2.out',
             scrollTrigger: {
               trigger: secao,
-              start: 'top 96%',
+              start: 'top 90%',
               once: true,
             },
           })
@@ -185,26 +296,25 @@ export function Home() {
     },
   )
 
-  function tentarNovamente() {
-    setErro(false)
-    setTentativa((anterior) => anterior + 1)
-  }
-
   const pronto = tempoMinimoConcluido && (catalogo !== null || erro)
 
   return (
     <div ref={root}>
-      {!homeVisivel && (
-        <Preloader ready={pronto} onDone={finalizarPreloader} />
+      {preloaderAtivo && (
+        <Preloader ready={pronto} onReveal={revelarHome} onDone={removerPreloader} />
       )}
 
       <main inert={!homeVisivel}>
         <section className="mega-stage" aria-labelledby="mega-title">
           <div className="mega-scene">
             {/* O CSS posiciona o título atrás do PNG transparente. */}
-            <h1 id="mega-title" className="mega-title">
-              <span>MEGA</span>{' '}
-              <span>MOTORS</span>
+            <h1 id="mega-title" className="mega-title" aria-label="Mega Motors">
+              <span aria-hidden="true">
+                <Letras texto="MEGA" />
+              </span>{' '}
+              <span aria-hidden="true">
+                <Letras texto="MOTORS" />
+              </span>
             </h1>
 
             <img
@@ -218,15 +328,12 @@ export function Home() {
           </div>
 
           <div className="mega-actions hero-copy">
-            <Button
-              label="Explorar a frota ↓"
-              onClick={() => document.getElementById('frota')?.scrollIntoView()}
-            />
+            <Button label="Explorar a frota ↓" onClick={() => rolarPara('frota')} />
 
             <Button
               label="Ver categorias"
               variant="secondary"
-              onClick={() => document.getElementById('categorias')?.scrollIntoView()}
+              onClick={() => rolarPara('categorias')}
             />
           </div>
         </section>
@@ -235,8 +342,8 @@ export function Home() {
           <section className="container-wide intro reveal">
             <h2>Sobre a Mega Motors</h2>
             <p>
-              Compare categorias e diárias, escolha o carro para sua viagem
-              e acompanhe a locação da retirada até a devolução.
+              Compare categorias e diárias, escolha o carro para sua viagem e
+              acompanhe a locação da retirada até a devolução.
             </p>
           </section>
         </div>
@@ -244,7 +351,10 @@ export function Home() {
         <div className="container-wide">
           {erro && (
             <div className="alert alert-warning mt-4" role="alert">
-              <p>Não foi possível carregar a frota. Confira se o JSON Server está rodando.</p>
+              <p>
+                Não foi possível carregar a frota. Confira se o JSON Server está
+                rodando.
+              </p>
               <Button label="Tentar novamente" onClick={tentarNovamente} />
             </div>
           )}
@@ -257,7 +367,7 @@ export function Home() {
             <h2>Categorias e diárias</h2>
 
             {catalogo?.categorias.map((categoria) => (
-              <div className="rate" key={categoria.id}>
+              <div className="rate reveal-item" key={categoria.id}>
                 <h3>{categoria.nome}</h3>
                 <p>
                   <strong>{moeda.format(categoria.valorLocacao)}</strong> / dia
@@ -274,41 +384,28 @@ export function Home() {
             <h2>Destaques da frota</h2>
 
             <div className="row g-3">
-              {catalogo?.veiculos.slice(0, 3).map((veiculo) => {
-                const modelo = catalogo.modelos.find(
-                  (item) => item.id === veiculo.modeloId,
-                )
-                const marca = catalogo.marcas.find(
-                  (item) => item.id === modelo?.marcaId,
-                )
-                const categoria = catalogo.categorias.find(
-                  (item) => item.id === modelo?.categoriaId,
-                )
+              {destaques.map(({ veiculo, titulo, categoria }) => (
+                <div
+                  className="col-12 col-md-4 reveal-item"
+                  key={veiculo.id ?? veiculo.placa}
+                >
+                  <Card title={titulo}>
+                    <p>
+                      {veiculo.cor} · {veiculo.anoFabricacao} ·{' '}
+                      {veiculo.kmRodado.toLocaleString('pt-BR')} km
+                    </p>
 
-                const titulo =
-                  [marca?.nome, modelo?.nome].filter(Boolean).join(' ') ||
-                  veiculo.placa
-
-                return (
-                  <div className="col-12 col-md-4" key={veiculo.id}>
-                    <Card title={titulo}>
-                      <p>
-                        {veiculo.cor} · {veiculo.anoFabricacao} ·{' '}
-                        {veiculo.kmRodado.toLocaleString('pt-BR')} km
-                      </p>
-
-                      <footer>
-                        <span>{categoria?.nome ?? 'Categoria pendente'}</span>
-                        <strong>
-                          {categoria
-                            ? `${moeda.format(categoria.valorLocacao)}/dia`
-                            : 'Sob consulta'}
-                        </strong>
-                      </footer>
-                    </Card>
-                  </div>
-                )
-              })}
+                    <footer>
+                      <span>{categoria?.nome ?? 'Categoria pendente'}</span>
+                      <strong>
+                        {categoria
+                          ? `${moeda.format(categoria.valorLocacao)}/dia`
+                          : 'Sob consulta'}
+                      </strong>
+                    </footer>
+                  </Card>
+                </div>
+              ))}
             </div>
 
             {catalogo?.veiculos.length === 0 && (
@@ -321,7 +418,10 @@ export function Home() {
 
             <ol className="row g-4 steps">
               {etapas.map((etapa, indice) => (
-                <li className="col-12 col-sm-6 col-lg-3" key={etapa.titulo}>
+                <li
+                  className="col-12 col-sm-6 col-lg-3 reveal-item"
+                  key={etapa.titulo}
+                >
                   <small>{String(indice + 1).padStart(2, '0')}</small>
                   <h3>{etapa.titulo}</h3>
                   <p>{etapa.descricao}</p>

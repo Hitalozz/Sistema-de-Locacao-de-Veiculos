@@ -1,9 +1,47 @@
+/* ==========================================================================
+   MegaHome.css — Home da Mega Motors
+   Paleta: azul-céu do hero + laranja dos bancos do carro como cor de destaque.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap');
+
+:root {
+  --mega-ink: #0d2c40;
+  --mega-deep: #08202f;
+  --mega-sky: #29759d;
+  --mega-accent: #ff7a1a;
+  --mega-accent-hover: #ff9142;
+  --mega-paper: #eef5f9;
+  --mega-muted: #4b6577;
+  --mega-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  /* altura do corte diagonal entre o hero e a faixa escura */
+  --mega-corte: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+/* Fundo e cor base só quando a página tem o hero (não afeta outras telas) */
+main:has(.mega-stage) {
+  background: var(--mega-paper);
+  color: var(--mega-ink);
+}
+
+.container-wide {
+  width: min(1120px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
 .mega-stage {
   display: grid;
   justify-items: center;
   overflow: hidden;
-  background: linear-gradient(180deg,#13435f 0%,#29759d 40%,#55bce7 72%,#b7ebfc 83%,#78cdeb 100%);
+  background:
+    radial-gradient(ellipse 55% 40% at 50% 34%, rgba(255, 255, 255, 0.38), transparent 70%),
+    linear-gradient(180deg, #13435f 0%, #29759d 40%, #55bce7 72%, #b7ebfc 83%, #78cdeb 100%);
 }
+
 .mega-scene {
   position: relative;
   isolation: isolate;
@@ -11,6 +49,7 @@
   aspect-ratio: 1.38;
   container-type: inline-size;
 }
+
 .mega-title {
   position: absolute;
   z-index: 1;
@@ -19,14 +58,17 @@
   transform: translateX(-50%);
   margin: 0;
   color: white;
-  font-family: 'Barlow Condensed','Arial Narrow',sans-serif;
+  font-family: var(--mega-display);
   font-weight: 800;
-  line-height: .84;
+  line-height: 0.84;
+  letter-spacing: 0.03em;
   text-align: center;
+  text-shadow: 0 0.05em 0.3em rgba(7, 35, 58, 0.35);
 }
 .mega-title span { display: block; }
 .mega-title span:first-child { font-size: 18cqw; }
 .mega-title span:last-child { font-size: 12cqw; }
+
 .mega-poster {
   position: absolute;
   z-index: 2;
@@ -36,21 +78,448 @@
   left: 50%;
   translate: -50% -50%;
   pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 22px 28px rgba(6, 28, 45, 0.38));
 }
+
 .mega-actions {
   position: relative;
   z-index: 3;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: .65rem;
-  padding: .5rem 1rem 2rem;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem calc(2rem + var(--mega-corte));
 }
-.mega-actions .btn-secondary { color: #102e40; border-color: #245269; }
-.mega-actions .btn-secondary:hover { color: white; }
+
+/* ==========================================================================
+   Botões (classes do Bootstrap geradas pelo componente Button)
+   ========================================================================== */
+
+.mega-actions .btn,
+.cta .btn,
+.alert .btn {
+  border-radius: 999px;
+  padding: 0.8rem 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: translate 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.mega-actions .btn:hover,
+.cta .btn:hover,
+.alert .btn:hover {
+  translate: 0 -3px;
+}
+
+.mega-actions .btn:focus-visible,
+.cta .btn:focus-visible,
+.alert .btn:focus-visible {
+  outline: 3px solid var(--mega-ink);
+  outline-offset: 3px;
+}
+
+.mega-actions .btn-primary,
+.cta .btn-primary,
+.alert .btn-primary {
+  --bs-btn-bg: var(--mega-accent);
+  --bs-btn-border-color: var(--mega-accent);
+  --bs-btn-color: #1b0f04;
+  --bs-btn-hover-bg: var(--mega-accent-hover);
+  --bs-btn-hover-border-color: var(--mega-accent-hover);
+  --bs-btn-hover-color: #1b0f04;
+  --bs-btn-active-bg: #e8630a;
+  --bs-btn-active-border-color: #e8630a;
+  --bs-btn-active-color: #1b0f04;
+  box-shadow: 0 10px 24px -10px rgba(255, 122, 26, 0.85);
+}
+
+.mega-actions .btn-primary:hover,
+.cta .btn-primary:hover,
+.alert .btn-primary:hover {
+  box-shadow: 0 16px 30px -10px rgba(255, 122, 26, 0.95);
+}
+
+/* Secundário "vidro": texto escuro porque fica sobre a faixa clara do céu */
+.mega-actions .btn-secondary {
+  --bs-btn-bg: rgba(255, 255, 255, 0.55);
+  --bs-btn-border-color: rgba(13, 44, 64, 0.35);
+  --bs-btn-color: var(--mega-ink);
+  --bs-btn-hover-bg: var(--mega-ink);
+  --bs-btn-hover-border-color: var(--mega-ink);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--mega-deep);
+  --bs-btn-active-border-color: var(--mega-deep);
+  --bs-btn-active-color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+/* ==========================================================================
+   Faixa escura (Sobre) com corte diagonal sobre o hero
+   ========================================================================== */
+
+.dark-band {
+  position: relative;
+  margin-top: calc(var(--mega-corte) * -1);
+  padding: calc(var(--mega-corte) + clamp(3rem, 7vw, 5rem)) 0 clamp(3rem, 7vw, 5rem);
+  color: #fff;
+  background:
+    radial-gradient(60% 90% at 85% 0%, rgba(85, 188, 231, 0.22), transparent 70%),
+    linear-gradient(180deg, #0b2535 0%, #0d2c40 100%);
+  clip-path: polygon(0 var(--mega-corte), 100% 0, 100% 100%, 0 100%);
+}
+
+.intro { max-width: 760px; }
+
+.intro h2 {
+  margin: 0 0 1.1rem;
+  font-family: var(--mega-display);
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.intro h2::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: 1rem;
+  border-radius: 4px;
+  background: var(--mega-accent);
+}
+
+.intro p {
+  margin: 0;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ==========================================================================
+   Seções
+   ========================================================================== */
+
+.section {
+  padding: clamp(3rem, 7vw, 5.5rem) 0 clamp(1rem, 3vw, 2rem);
+}
+
+.section h2 {
+  margin: 0 0 1.75rem;
+  font-family: var(--mega-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.section h2::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 4px;
+  margin-top: 0.85rem;
+  border-radius: 4px;
+  background: var(--mega-accent);
+}
+
+[role='status'] {
+  margin: 2rem 0 0;
+  color: var(--mega-muted);
+}
+
+.alert-warning {
+  border-radius: 14px;
+}
+
+/* ---------- Categorias e diárias ---------- */
+
+#categorias {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.1rem;
+}
+
+#categorias > h2,
+#categorias > p {
+  grid-column: 1 / -1;
+}
+
+#categorias > h2 { margin-bottom: 0.65rem; }
+
+.rate {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem 1.5rem 1.4rem 1.85rem;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(13, 44, 64, 0.06),
+    0 14px 30px -16px rgba(13, 44, 64, 0.3);
+  transition: translate 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rate::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: linear-gradient(180deg, var(--mega-accent), #ffb347);
+}
+
+.rate:hover {
+  translate: 0 -6px;
+  box-shadow:
+    0 2px 4px rgba(13, 44, 64, 0.08),
+    0 22px 38px -16px rgba(13, 44, 64, 0.38);
+}
+
+.rate h3 {
+  margin: 0 0 0.6rem;
+  font-family: var(--mega-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.rate p {
+  margin: 0;
+  color: var(--mega-muted);
+}
+
+.rate strong {
+  font-family: var(--mega-display);
+  font-size: 2.3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--mega-ink);
+}
+
+/* ---------- Destaques da frota (componente Card) ---------- */
+
+main .card {
+  height: 100%;
+  overflow: hidden;
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(13, 44, 64, 0.06),
+    0 14px 30px -16px rgba(13, 44, 64, 0.3);
+  transition: translate 0.3s ease, box-shadow 0.3s ease;
+}
+
+main .card:hover {
+  translate: 0 -6px;
+  box-shadow:
+    0 2px 4px rgba(13, 44, 64, 0.08),
+    0 24px 40px -16px rgba(13, 44, 64, 0.4);
+}
+
+main .card-header,
+main .card-title {
+  font-family: var(--mega-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+main .card-header {
+  padding: 1rem 1.25rem;
+  border: 0;
+  font-size: 1.35rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--mega-ink), var(--mega-sky));
+}
+
+main .card-title { font-size: 1.4rem; }
+
+main .card p { color: var(--mega-muted); }
+
+main .card footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(13, 44, 64, 0.2);
+}
+
+main .card footer span {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--mega-ink);
+  background: rgba(85, 188, 231, 0.25);
+}
+
+main .card footer strong {
+  font-family: var(--mega-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--mega-ink);
+}
+
+/* ---------- Como funciona a locação ---------- */
+
+.steps {
+  padding-left: 0;
+  list-style: none;
+}
+
+.steps > li {
+  position: relative;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* Fundo do "cartão" alinhado ao conteúdo, descontando a calha do Bootstrap */
+.steps > li::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(var(--bs-gutter-x) * 0.5);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(13, 44, 64, 0.06),
+    0 14px 30px -16px rgba(13, 44, 64, 0.28);
+  border-top: 4px solid var(--mega-accent);
+}
+
+.steps > li > * {
+  position: relative;
+  margin-inline: 1.4rem;
+}
+
+.steps small {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--mega-display);
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--mega-accent);
+}
+
+.steps h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-family: var(--mega-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.steps p {
+  margin-bottom: 0;
+  color: var(--mega-muted);
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   Chamada final e rodapé
+   ========================================================================== */
+
+.cta {
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding: clamp(4rem, 10vw, 7rem) 0;
+  text-align: center;
+  color: #fff;
+  background:
+    radial-gradient(60% 120% at 50% 0%, rgba(255, 255, 255, 0.2), transparent 60%),
+    linear-gradient(135deg, #0d2c40 0%, #1f6a93 55%, #55bce7 100%);
+}
+
+.cta h2 {
+  max-width: 14ch;
+  margin: 0 auto 1.9rem;
+  font-family: var(--mega-display);
+  font-size: clamp(2.3rem, 6.5vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.cta .btn {
+  padding: 1rem 2.4rem;
+  font-size: 1.15rem;
+}
+
+.cta .btn:focus-visible { outline-color: #fff; }
+
+.bottom {
+  padding: 1.6rem 0;
+  color: rgba(255, 255, 255, 0.7);
+  background: var(--mega-deep);
+}
+
+.bottom .container-wide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+}
+
+.bottom strong {
+  font-family: var(--mega-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+}
+
+.bottom span { font-size: 0.9rem; }
+
+/* ==========================================================================
+   Responsivo
+   ========================================================================== */
+
 @media (max-width: 600px) {
   .mega-scene { margin-top: 1.5rem; aspect-ratio: 1.1; }
   .mega-title { bottom: 54%; }
   .mega-poster { width: 82%; }
+
+  .mega-actions .btn {
+    width: min(100%, 320px);
+  }
+
+  .bottom .container-wide {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
+/* ==========================================================================
+   Movimento reduzido: sem transições nem elevação no hover
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .mega-actions .btn,
+  .cta .btn,
+  .alert .btn,
+  .rate,
+  main .card {
+    transition: none;
+  }
+
+  .mega-actions .btn:hover,
+  .cta .btn:hover,
+  .alert .btn:hover,
+  .rate:hover,
+  main .card:hover {
+    translate: none;
+  }
+}

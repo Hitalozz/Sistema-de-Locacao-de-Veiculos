@@ -1,0 +1,230 @@
+/* ==========================================================================
+   Preloader "Largada" — velocímetro + cortinas que se abrem
+   ========================================================================== */
+
+.pl-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  color: #fff;
+  font-family: var(--mega-display, 'Barlow Condensed', 'Arial Narrow', sans-serif);
+}
+
+/* ---------- Cortinas (duas metades) ---------- */
+
+.pl-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  will-change: transform;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px),
+    linear-gradient(180deg, #06161f 0%, #0a2434 100%);
+}
+
+.pl-panel--esq {
+  left: 0;
+  box-shadow: 1px 0 0 rgba(255, 122, 26, 0.55);
+}
+
+.pl-panel--dir {
+  right: 0;
+  box-shadow: -1px 0 0 rgba(255, 122, 26, 0.55);
+}
+
+/* ---------- Conteúdo central ---------- */
+
+.pl-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3svh, 2rem);
+}
+
+.pl-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(40% 40% at 50% 52%, rgba(41, 117, 157, 0.38), transparent 70%);
+}
+
+/* Nome da marca: contorno fixo + camada branca que "enche" com o progresso */
+.pl-brand {
+  position: relative;
+  display: grid;
+  font-size: clamp(2.2rem, 9vw, 4.6rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pl-brand span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+.pl-brand-contorno {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.5);
+}
+
+.pl-brand-preenchido {
+  color: #fff;
+  clip-path: inset(0 100% 0 0);
+  text-shadow: 0 0 28px rgba(85, 188, 231, 0.55);
+}
+
+/* ---------- Velocímetro ---------- */
+
+.pl-gauge {
+  position: relative;
+  width: min(78vw, 52svh, 440px);
+  aspect-ratio: 1;
+  container-type: inline-size;
+}
+
+.pl-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pl-trilho,
+.pl-zona,
+.pl-arco {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.pl-trilho {
+  stroke: rgba(255, 255, 255, 0.12);
+}
+
+/* Últimos 20% do arco: zona vermelha */
+.pl-zona {
+  stroke: rgba(255, 90, 40, 0.45);
+  stroke-dasharray: 20 100;
+  stroke-dashoffset: -80;
+}
+
+.pl-arco {
+  stroke: url(#pl-grad);
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  filter: drop-shadow(0 0 8px rgba(255, 122, 26, 0.6));
+}
+
+.pl-tick {
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 2;
+}
+
+.pl-tick--maior {
+  stroke: #fff;
+  stroke-width: 4;
+}
+
+.pl-rotulo {
+  fill: rgba(255, 255, 255, 0.75);
+  stroke: none;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.pl-ponteiro polygon {
+  fill: var(--mega-accent, #ff7a1a);
+  filter: drop-shadow(0 0 6px rgba(255, 122, 26, 0.8));
+}
+
+.pl-eixo {
+  fill: #0a2434;
+  stroke: var(--mega-accent, #ff7a1a);
+  stroke-width: 6;
+}
+
+/* Número no centro (tamanhos relativos ao velocímetro via container query) */
+.pl-readout {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  translate: -50% -50%;
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+}
+
+.pl-count {
+  font-size: 22cqw;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.pl-unit {
+  font-size: 8cqw;
+  font-weight: 700;
+  color: var(--mega-accent, #ff7a1a);
+}
+
+.pl-status {
+  min-height: 1.4em;
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ---------- Linhas de velocidade e flash da largada ---------- */
+
+.pl-streaks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pl-streak {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70vmax;
+  height: 2px;
+  opacity: 0;
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 18%,
+    rgba(255, 255, 255, 0.95) 55%,
+    rgba(255, 122, 26, 0.9) 100%
+  );
+}
+
+.pl-flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #fff 0%,
+    rgba(255, 190, 120, 0.95) 35%,
+    rgba(255, 122, 26, 0.6) 70%,
+    rgba(255, 122, 26, 0) 100%
+  );
+}
+
+@media (max-width: 600px) {
+  .pl-status {
+    font-size: 0.95rem;
+    letter-spacing: 0.25em;
+  }
+}
