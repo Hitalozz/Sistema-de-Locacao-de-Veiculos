@@ -1,3 +1,4 @@
+import { MarcaList } from './pages/marcas/MarcaList'
 import { Link, Route, Routes } from 'react-router-dom'
 import { modules } from './modules'
 import { Navbar } from './components/Navbar'
@@ -10,7 +11,9 @@ function Placeholder({title}: PlaceholderProps) {
 export default function App() {
   return <><Navbar /><Routes>
     <Route path="/" element={<Home />} />
-    {modules.map(([path,title]) => <Route key={path} path={path} element={<Placeholder title={title} />} />)}
+    <Route path="/marcas" element={<MarcaList />} />
+    {modules.filter(([path]) => path !== 'marcas').map(([path,title]) => <Route key={path} path={path} element={<Placeholder title={title} />} />)}
     <Route path="*" element={<main className="container py-5"><h1>Página não encontrada</h1><Link to="/">Voltar ao início</Link></main>} />
   </Routes></>
 }
+
