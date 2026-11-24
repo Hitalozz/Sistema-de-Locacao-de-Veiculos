@@ -1,3 +1,4 @@
+import { Pagamentos } from './Pagamentos'
 import { VistoriaRetirada } from './VistoriaRetirada'
 import { Contrato } from './Contrato'
 import './Contrato.css'
@@ -10,7 +11,7 @@ import { logos } from '../../assets/logos'
 import { Select } from '../../components/Select'
 import { Input } from '../../components/Input'
 import { Button } from '../../components/Button'
-import { calcular, carregar, reservar, type Pedido } from '../../service/locacaoService'
+import { indisponivel, calcular, carregar, reservar, type Pedido } from '../../service/locacaoService'
 
 import './Locacoes.css'
 
@@ -188,7 +189,7 @@ export function Locacoes() {
     )
   }
 
-  return <NovaLocacao dados={dados} onReservada={registrar} />
+  return <NovaLocacao dados={dados} onReservada={registrar} atualizar={tentarNovamente} />
 }
 
 /* ------------------------------------------------------------------ */
@@ -197,10 +198,11 @@ export function Locacoes() {
 
 interface NovaLocacaoProps {
   dados: Dados
+  atualizar: () => void
   onReservada: (locacao: LocacaoSalva) => void
 }
 
-function NovaLocacao({ dados, onReservada }: NovaLocacaoProps) {
+function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
   const pagina = useRef<HTMLElement>(null)
 
   const [pedido, setPedido] = useState(vazio)
@@ -219,11 +221,11 @@ function NovaLocacao({ dados, onReservada }: NovaLocacaoProps) {
   // Mostra "PLACA · Modelo" para o usuário escolher sem decorar placas.
   const opcoesVeiculos = useMemo(
     () =>
-      dados.veiculos.map((v) => {
+      dados.veiculos.filter(v => !indisponivel({...pedido,veiculoId:v.id},dados)).map((v) => {
         const { modelo: m } = calcular({ ...vazio, veiculoId: v.id }, dados)
         return { value: v.id, label: m ? `${v.placa} · ${m.nome}` : v.placa }
       }),
-    [dados],
+    [dados,pedido],
   )
 
   const { veiculo, modelo, diaria, dias, total } = calcular(pedido, dados)
@@ -243,7 +245,7 @@ function NovaLocacao({ dados, onReservada }: NovaLocacaoProps) {
   ]
   const concluidos = passos.filter((p) => p.ok).length
   const pendentes = passos.filter((p) => !p.ok).map((p) => p.rotulo.toLowerCase())
-  const podeConfirmar = Boolean(pedido.clienteId) && total !== undefined && !ocupado
+  const podeConfirmar = Boolean(pedido.clienteId) && total !== undefined && !indisponivel(pedido,dados) && !ocupado
 
   // Datas preenchidas, mas o cálculo não fechou: a devolução não é posterior à retirada (RN02).
   const periodoInvalido = Boolean(
@@ -588,8 +590,9 @@ function NovaLocacao({ dados, onReservada }: NovaLocacaoProps) {
                     </div>
 
                     <span className="lf-item-valor">{dinheiro.format(l.valorPrevisto)}</span>
-                    <VistoriaRetirada tipo="devolucao" locacaoId={l.id} placa={placa}/>
-                    <VistoriaRetirada locacaoId={l.id} placa={placa} kmAtual={calculo.veiculo?.kmRodado}/>
+                    <VistoriaRetirada atualizar={atualizar} tipo="devolucao" locacaoId={l.id} placa={placa}/>
+                    <VistoriaRetirada atualizar={atualizar} locacaoId={l.id} placa={placa} kmAtual={calculo.veiculo?.kmRodado}/>
+                    <Pagamentos reserva={l} lista={dados.pagamentos.filter(p => p.locacaoId === l.id)} atualizar={atualizar}/>
                     <Contrato reserva={l} cliente={cliente} modelo={nomeModelo ?? 'Modelo indisponível'} placa={placa} dias={calculo.dias} />
                   </li>
                 )
@@ -601,5 +604,6 @@ function NovaLocacao({ dados, onReservada }: NovaLocacaoProps) {
     </main>
   )
 }
+
 
 

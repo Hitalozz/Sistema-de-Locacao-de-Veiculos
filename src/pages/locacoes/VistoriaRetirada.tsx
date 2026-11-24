@@ -6,12 +6,13 @@ import { vistoriaService } from '../../service/vistoriaService'
 import type { Vistoria } from '../../models/Vistoria'
 
 interface Props {
+  atualizar: () => void
   locacaoId: string
   placa: string
   tipo?: Vistoria['tipo']
   kmAtual?: number
 }
-export function VistoriaRetirada({locacaoId,placa,kmAtual,tipo='retirada'}: Props) {
+export function VistoriaRetirada({atualizar,locacaoId,placa,kmAtual,tipo='retirada'}: Props) {
   const devolucao = tipo === 'devolucao'
   const [retirada,setRetirada] = useState<Vistoria>()
   const janela = useRef<HTMLDialogElement>(null)
@@ -49,6 +50,7 @@ export function VistoriaRetirada({locacaoId,placa,kmAtual,tipo='retirada'}: Prop
     try {
       setSalva(await vistoriaService.registrar(locacaoId,km.trim() ? Number(km) : NaN,
         nivel.trim() ? Number(nivel) : NaN,condicoes,tipo))
+      atualizar()
     } catch (e) {
       setErro(e instanceof Error && !isAxiosError(e) ? e.message : 'Falha ao registrar. Confira o JSON Server e tente novamente.')
     } finally {setOcupado(false)}
@@ -84,4 +86,5 @@ export function VistoriaRetirada({locacaoId,placa,kmAtual,tipo='retirada'}: Prop
     </dialog>
   </>
 }
+
 

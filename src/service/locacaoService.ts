@@ -1,3 +1,5 @@
+import { saldoRestante, type Pagamento } from './pagamentoService'
+import type { Vistoria } from '../models/Vistoria'
 import { marcaService } from './marcaService'
 import { api } from './api'
 import { clienteService } from './clienteService'
@@ -17,11 +19,11 @@ export interface Locacao extends Pedido {
   status: string
 }
 export async function carregar() {
-  const [clientes,veiculos,modelos,categorias,marcas,lista] = await Promise.all([
+  const [clientes,veiculos,modelos,categorias,marcas,lista,pagamentos,vistorias] = await Promise.all([
     clienteService.listar(),veiculoService.listar(),modeloService.listar(),categoriaService.listar(),marcaService.listar(),
-    api.get<Locacao[]>('/locacoes')
+    api.get<Locacao[]>('/locacoes'),api.get<Pagamento[]>('/pagamentos'),api.get<Vistoria[]>('/vistorias')
   ])
-  return {clientes,veiculos,modelos,categorias,marcas,locacoes:lista.data}
+  return {clientes,veiculos,modelos,categorias,marcas,locacoes:lista.data,pagamentos:pagamentos.data,vistorias:vistorias.data}
 }
 export function calcular(p: Pedido, dados: Awaited<ReturnType<typeof carregar>>) {
   const veiculo = dados.veiculos.find(v => v.id === p.veiculoId)
@@ -37,9 +39,19 @@ export async function reservar(p: Pedido) {
   const {diaria,total} = calcular(p,dados)
   if (!cliente || !cliente.validadeCnh || cliente.validadeCnh < p.retirada) throw new Error('Confira o cliente e a validade da CNH na retirada.')
   if (diaria === undefined || total === undefined) throw new Error('Selecione um veículo com diária e uma devolução posterior à retirada.')
-  if (dados.locacoes.some(l => l.veiculoId === p.veiculoId && l.status !== 'cancelada' && l.retirada < p.devolucaoPrevista && p.retirada < l.devolucaoPrevista))
-    throw new Error('O veículo já possui uma locação nesse período.')
+  if (indisponivel(p,dados)) throw new Error('Veículo indisponível para esta reserva.')
   const registro: Locacao = {...p,id:crypto.randomUUID(),valorDiaria:diaria,valorPrevisto:total,status:'reservada'}
   return (await api.post<Locacao>('/locacoes',registro)).data
 }
 
+
+export function indisponivel(p:Pedido,dados:Awaited<ReturnType<typeof carregar>>) {
+  return dados.locacoes.some(l => {
+    if (l.veiculoId !== p.veiculoId || l.status === 'cancelada') return false
+    const checks = dados.vistorias.filter(v => v.locacaoId === l.id)
+    const saldo = saldoRestante(l.valorPrevisto,dados.pagamentos.filter(pg => pg.locacaoId === l.id))
+    if (checks.some(v => v.tipo === 'devolucao') && saldo <= 0) return false
+    return checks.some(v => v.tipo === 'retirada') ||
+      Boolean(p.retirada && p.devolucaoPrevista && l.retirada < p.devolucaoPrevista && p.retirada < l.devolucaoPrevista)
+  })
+}
