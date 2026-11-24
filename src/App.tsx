@@ -1,3 +1,4 @@
+import { ClienteList } from './pages/clientes/ClienteList'
 import { ManutencaoList } from './pages/manutencoes/ManutencaoList'
 import { VeiculoList } from './pages/veiculos/VeiculoList'
 import { ModeloList } from './pages/modelos/ModeloList'
@@ -13,16 +14,17 @@ function Placeholder({title}: PlaceholderProps) {
   return <main className="container py-5"><h1>{title}</h1><p>Esta página será implementada na próxima etapa do projeto.</p><Link to="/">Voltar ao início</Link></main>
 }
 export default function App() {
-  return <><Navbar /><Routes><Route path="/manutencoes" element={<ManutencaoList />} />
+  return <><Navbar /><Routes><Route path="/clientes" element={<ClienteList />} /><Route path="/manutencoes" element={<ManutencaoList />} />
     <Route path="/" element={<Home />} />
     <Route path="/categorias" element={<CategoriaList />} />
     <Route path="/veiculos" element={<VeiculoList />} />
     <Route path="/modelos" element={<ModeloList />} />
     <Route path="/marcas" element={<MarcaList />} />
-    {modules.filter(([path]) => path !== 'manutencoes' && path !== 'marcas' && path !== 'categorias' && path !== 'modelos' && path !== 'veiculos').map(([path,title]) => <Route key={path} path={path} element={<Placeholder title={title} />} />)}
+    {modules.filter(([path]) => path !== 'clientes' && path !== 'manutencoes' && path !== 'marcas' && path !== 'categorias' && path !== 'modelos' && path !== 'veiculos').map(([path,title]) => <Route key={path} path={path} element={<Placeholder title={title} />} />)}
     <Route path="*" element={<main className="container py-5"><h1>Página não encontrada</h1><Link to="/">Voltar ao início</Link></main>} />
   </Routes></>
 }
+
 
 
 
