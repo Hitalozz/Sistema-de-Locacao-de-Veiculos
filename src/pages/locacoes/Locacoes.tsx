@@ -1,3 +1,4 @@
+import { VistoriaRetirada } from './VistoriaRetirada'
 import { Contrato } from './Contrato'
 import './Contrato.css'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -587,6 +588,7 @@ function NovaLocacao({ dados, onReservada }: NovaLocacaoProps) {
                     </div>
 
                     <span className="lf-item-valor">{dinheiro.format(l.valorPrevisto)}</span>
+                    <VistoriaRetirada locacaoId={l.id} placa={placa} kmAtual={calculo.veiculo?.kmRodado}/>
                     <Contrato reserva={l} cliente={cliente} modelo={nomeModelo ?? 'Modelo indisponível'} placa={placa} dias={calculo.dias} />
                   </li>
                 )
@@ -598,3 +600,4 @@ function NovaLocacao({ dados, onReservada }: NovaLocacaoProps) {
     </main>
   )
 }
+
