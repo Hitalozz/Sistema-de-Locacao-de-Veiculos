@@ -1,3 +1,4 @@
+import { ModeloList } from './pages/modelos/ModeloList'
 import { CategoriaList } from './pages/categorias/CategoriaList'
 import { MarcaList } from './pages/marcas/MarcaList'
 import { Link, Route, Routes } from 'react-router-dom'
@@ -13,8 +14,9 @@ export default function App() {
   return <><Navbar /><Routes>
     <Route path="/" element={<Home />} />
     <Route path="/categorias" element={<CategoriaList />} />
+    <Route path="/modelos" element={<ModeloList />} />
     <Route path="/marcas" element={<MarcaList />} />
-    {modules.filter(([path]) => path !== 'marcas' && path !== 'categorias').map(([path,title]) => <Route key={path} path={path} element={<Placeholder title={title} />} />)}
+    {modules.filter(([path]) => path !== 'marcas' && path !== 'categorias' && path !== 'modelos').map(([path,title]) => <Route key={path} path={path} element={<Placeholder title={title} />} />)}
     <Route path="*" element={<main className="container py-5"><h1>Página não encontrada</h1><Link to="/">Voltar ao início</Link></main>} />
   </Routes></>
 }
