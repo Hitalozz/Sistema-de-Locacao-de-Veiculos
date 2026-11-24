@@ -48,5 +48,28 @@ app.post(['/locacoes','/pagamentos','/vistorias'], (req,res) => {
   router.db.get(tabela).push(item).write()
   return res.status(201).json(item)
 })
+app.post('/emitir-nota', (req, res) => {
+  const db = router.db.getState()
+  const l = db.locacoes.find(item => item.id === req.body.locacaoId)
+  if (!l) return res.status(404).json({mensagem:'Locação não encontrada.'})
+  const existente = db.notasFiscais.find(n => n.locacaoId === l.id && Number.isInteger(n.numero) && n.emitidaEm && Number.isFinite(n.total))
+  if (existente) return res.json(existente)
+  if (l.status === 'cancelada' || !encerrada(l, db)) {
+    return res.status(409).json({mensagem:'Para emitir, registre a devolução e quite o saldo da locação.'})
+  }
+  const cliente = db.clientes.find(c => c.id === l.clienteId)
+  const veiculo = db.veiculos.find(v => v.id === l.veiculoId)
+  const modelo = db.modelos.find(m => m.id === veiculo?.modeloId)
+  if (!cliente || !veiculo || !modelo) return res.status(409).json({mensagem:'Confira os cadastros de cliente, veículo e modelo.'})
+  const numero = db.notasFiscais.reduce((maior,n) => Math.max(maior,Number(n.numero) || 0),0) + 1
+  const nota = {id:'nota-'+l.id, numero, locacaoId:l.id, emitidaEm:new Date().toISOString(),
+    cliente:cliente.nome, placa:veiculo.placa, modelo:modelo.nome, retirada:l.retirada,
+    devolucaoPrevista:l.devolucaoPrevista, diaria:l.valorDiaria, total:l.valorPrevisto}
+    const notas = db.notasFiscais.filter(n => !(n.locacaoId === l.id && Object.keys(n).every(k => ['id','locacaoId'].includes(k))))
+  router.db.set('notasFiscais', [...notas, nota]).write()
+  return res.status(201).json(nota)
+})
 app.use(router)
 app.listen(Number(process.env.PORT || 3001), () => console.log('API de locações iniciada.'))
+
+

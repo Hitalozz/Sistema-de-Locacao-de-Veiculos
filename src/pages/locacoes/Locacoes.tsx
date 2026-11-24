@@ -1,3 +1,4 @@
+import { NotaDaLocacao } from './NotaDaLocacao'
 import { Pagamentos } from './Pagamentos'
 import { VistoriaRetirada } from './VistoriaRetirada'
 import { Contrato } from './Contrato'
@@ -592,6 +593,7 @@ function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
                     <span className="lf-item-valor">{dinheiro.format(l.valorPrevisto)}</span>
                     <VistoriaRetirada atualizar={atualizar} tipo="devolucao" locacaoId={l.id} placa={placa}/>
                     <VistoriaRetirada atualizar={atualizar} locacaoId={l.id} placa={placa} kmAtual={calculo.veiculo?.kmRodado}/>
+                    <NotaDaLocacao locacaoId={l.id}/>
                     <Pagamentos reserva={l} lista={dados.pagamentos.filter(p => p.locacaoId === l.id)} atualizar={atualizar}/>
                     <Contrato reserva={l} cliente={cliente} modelo={nomeModelo ?? 'Modelo indisponível'} placa={placa} dias={calculo.dias} />
                   </li>
@@ -604,6 +606,7 @@ function NovaLocacao({ dados, onReservada, atualizar }: NovaLocacaoProps) {
     </main>
   )
 }
+
 
 
 
