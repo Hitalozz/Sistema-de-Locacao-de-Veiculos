@@ -18,8 +18,6 @@ Aplicação web para gerenciar a frota, os clientes e todo o ciclo de locação,
 ---
 
 ##  Hitalo Augusto Lourenço Guedes 
-
-| ![puc](./src/assets/puc-goias.svg) |
 Ciência da Computação · PUC Goiás  
 Atividade de laboratório — Sistema de Locação de Veículos
 
