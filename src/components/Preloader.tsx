@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useCallback, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -240,8 +241,7 @@ export function Preloader({ ready, onReveal, onDone }: PreloaderProps) {
     { scope: root, dependencies: [ready] },
   )
 
-  return (
-    <div ref={root} className="pl-root" role="status">
+  return createPortal(<div ref={root} className="pl-root" role="status">
       <span className="visually-hidden">Carregando a Mega Motors…</span>
 
       <div className="pl-panel pl-panel--esq" aria-hidden="true" />
@@ -331,6 +331,5 @@ export function Preloader({ ready, onReveal, onDone }: PreloaderProps) {
       </div>
 
       <div className="pl-flash" aria-hidden="true" />
-    </div>
-  )
+    </div>, document.body)
 }

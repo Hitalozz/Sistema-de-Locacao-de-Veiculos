@@ -1,0 +1,45 @@
+.mega-cadastros {
+  min-height: calc(100vh - 72px);
+  color: var(--mega-ink);
+  background: var(--mega-paper);
+}
+.mega-cadastros main.container {
+  width: min(94%, 72rem);
+  padding-inline: 0;
+}
+.mega-cadastros main > header {
+  padding: clamp(1.25rem, 4vw, 2.75rem);
+  border-radius: 1.25rem;
+  background: linear-gradient(120deg, var(--mega-deep), var(--mega-sky));
+  color: white;
+}
+.mega-cadastros header h1, .mega-cadastros legend {
+  font-family: var(--mega-display);
+  font-weight: 800;
+  line-height: 1.05;
+}
+.mega-cadastros header h1 { color: white; margin: 0; }
+.mega-cadastros .action { border-radius: 2rem; font-weight: 700; }
+.mega-cadastros .btn-primary {
+  color: var(--mega-deep); background: var(--mega-accent); border-color: var(--mega-accent);
+}
+.mega-cadastros .btn-primary:hover { background: var(--mega-accent-hover); }
+.mega-cadastros .btn-secondary { color: var(--mega-ink); background: white; border-color: #a5b7c2; }
+.mega-cadastros .btn-secondary:hover { background: #e2edf3; }
+.mega-cadastros .btn-danger { color: #922c30; background: #fff3f1; border-color: #d9a7a6; }
+.mega-cadastros .btn-danger:hover { background: #ffdedb; }
+.mega-cadastros .table-responsive, .mega-cadastros form.card {
+  border: 1px solid #cbdbe4;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 0 .45rem 1.5rem rgb(13 44 64 / 8%);
+}
+.mega-cadastros .table { margin: 0; --bs-table-color: var(--mega-ink); }
+.mega-cadastros .table th { background: #dae9f1; white-space: nowrap; }
+.mega-cadastros .table :is(th,td) { padding: .9rem 1rem; }
+.mega-cadastros form.card { border-top: .25rem solid var(--mega-accent); }
+.mega-cadastros .form-label { font-weight: 600; }
+.mega-cadastros :is(.form-control,.form-select):focus {
+  border-color: var(--mega-sky); box-shadow: 0 0 0 .2rem rgb(41 117 157 / 20%);
+}
+.mega-cadastros .action:focus-visible { outline: 3px solid #54b3dc; outline-offset: 2px; }
