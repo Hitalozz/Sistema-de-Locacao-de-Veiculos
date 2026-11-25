@@ -17,9 +17,9 @@ Aplicação web para gerenciar a frota, os clientes e todo o ciclo de locação,
 
 ---
 
-## 👤 Autor
+##  Hitalo Augusto Lourenço Guedes 
 
-**Hitalo Augusto Lourenço Guedes**  
+| ![puc](./src/assets/puc-goias.svg) |
 Ciência da Computação · PUC Goiás  
 Atividade de laboratório — Sistema de Locação de Veículos
 
@@ -27,7 +27,7 @@ Atividade de laboratório — Sistema de Locação de Veículos
 | :---: |
 | ![Home da MEGA MOTORS](./src/assets/image.png) |
 
-## 📌 Status do projeto
+##  Status do projeto
 
 O MEGA MOTORS reúne os cadastros de marcas, categorias, modelos, veículos, manutenções e clientes. O módulo de locações conecta esses dados para calcular o valor previsto, acompanhar o contrato, registrar vistorias e pagamentos e controlar quando o veículo pode ser alugado novamente.
 
@@ -39,7 +39,7 @@ O MEGA MOTORS reúne os cadastros de marcas, categorias, modelos, veículos, man
 | 4 | Locação, contrato, vistorias, pagamentos e nota fiscal simulada | ✅ Implementada |
 | 5 | Consultas, filtros e controle de disponibilidade | ✅ Implementada |
 
-## 🚀 Como executar
+## Como executar
 
 **Versão recomendada:** Node.js 22.13 ou mais recente da linha 22 LTS, com npm.
 
@@ -70,7 +70,7 @@ Para encerrar os dois processos, pressione `Ctrl+C` no terminal. Se a Home exibi
 | `npm run preview` | Abre uma prévia do build. Para consultar os dados, execute a API também |
 | `npm run lint` | Verifica o código com ESLint |
 
-## ✨ O que tem na Home
+##  O que tem na Home
 
 - **Preloader “Largada”.** Um velocímetro acompanha o carregamento enquanto o nome MEGA MOTORS ganha preenchimento. Quando os dados ficam prontos, o ponteiro acelera, a tela dá um flash e as duas metades se abrem para revelar a Home.
 - **Hero imersivo.** O título entra letra por letra. Ao rolar a página, a seção fica fixa por um momento enquanto o carro cresce em direção à tela.
@@ -79,7 +79,7 @@ Para encerrar os dois processos, pressione `Ctrl+C` no terminal. Se a Home exibi
 - **Navegação compartilhada.** O cabeçalho reúne a identidade MEGA MOTORS, a logo da PUC Goiás, o menu de módulos e o acesso a Locações.
 - **Responsividade e acessibilidade.** O layout se adapta do celular ao desktop. As animações respeitam `prefers-reduced-motion`, e as imagens informativas têm texto alternativo.
 
-## 🧭 Funcionalidades implementadas
+##  Funcionalidades implementadas
 
 | Módulo | O que o usuário pode fazer |
 | --- | --- |
@@ -92,7 +92,7 @@ Para encerrar os dois processos, pressione `Ctrl+C` no terminal. Se a Home exibi
 | **Locações** | Selecionar cliente, veículo e período, consultar o contrato e acompanhar vistorias, pagamentos e nota fiscal simulada |
 | **Consultas** | Filtrar locações por cliente e status, consultar detalhes e acompanhar a disponibilidade da frota |
 
-## 🔑 Fluxo de uma locação
+##  Fluxo de uma locação
 
 1. **Escolha do veículo.** Selecione o cliente, o veículo disponível e o período da locação. A tela apresenta a foto do carro, a logo da marca e o valor da diária.
 2. **Cálculo e registro.** O sistema calcula o valor previsto multiplicando a quantidade de diárias pela tarifa da categoria. Com a locação registrada, o contrato fica disponível para consulta e o veículo passa a constar como alugado.
@@ -100,7 +100,7 @@ Para encerrar os dois processos, pressione `Ctrl+C` no terminal. Se a Home exibi
 4. **Pagamento e liberação.** Registre os pagamentos e acompanhe o saldo. O veículo volta a ficar disponível quando **as duas condições** forem atendidas: **vistoria de devolução registrada** e **saldo quitado**.
 5. **Nota fiscal simulada.** Com a devolução registrada e o pagamento concluído, é possível emitir o documento com os dados do cliente, do veículo, do período e do valor da locação. A nota tem finalidade acadêmica e não possui valor fiscal.
 
-## 🛠️ Tecnologias
+##  Tecnologias
 
 | Tecnologia | Uso no projeto |
 | --- | --- |
@@ -148,7 +148,7 @@ As **páginas** apresentam os dados e recebem as ações do usuário. Os **compo
 
 O arquivo `servidor.cjs` usa o JSON Server para acessar o `db.json` e aplicar regras nas operações de locação, vistoria, pagamento e emissão da nota simulada.
 
-## 🧩 Modelo de dados
+##  Modelo de dados
 
 | Relacionamento | Significado |
 | --- | --- |
@@ -165,14 +165,14 @@ O arquivo `servidor.cjs` usa o JSON Server para acessar o `db.json` e aplicar re
 
 O `db.json` organiza os dados em coleções. As chaves estrangeiras seguem o formato `<entidade>Id`, como `marcaId`, `categoriaId`, `modeloId` e `veiculoId`.
 
-## ⚙️ Detalhes de implementação
+##  Detalhes de implementação
 
 - **Preloader sincronizado com a API.** O indicador avança enquanto o catálogo carrega. Quando a consulta termina e o tempo mínimo da animação é atingido, o velocímetro completa o percurso e as cortinas se abrem.
 - **Ciclo das animações.** `useGSAP` e `gsap.matchMedia()` organizam as animações e sua limpeza ao sair da rota.
 - **Dados da Home.** O hook `useCatalogo` busca os dados com suporte a cancelamento por `AbortController`. A Home usa `useMemo` para relacionar veículos, modelos, marcas e categorias.
 - **Identidade visual.** O azul do hero e o laranja dos detalhes aparecem na Home e orientam o visual das demais telas. Na locação, a foto do carro e a logo da marca ajudam a identificar o veículo selecionado.
 
-## ✅ Checklist do projeto
+##  Checklist do projeto
 
 - [x] Projeto criado com Vite, React e TypeScript
 - [x] React Router, Bootstrap e Axios integrados
@@ -187,20 +187,10 @@ O `db.json` organiza os dados em coleções. As chaves estrangeiras seguem o for
 - [x] Emissão de nota fiscal simulada
 - [x] Consultas e filtros de locações
 
-## 📝 Histórico de commits
 
-O desenvolvimento foi organizado em commits por funcionalidade. Alguns exemplos:
-
-```text
-feat: implementa CRUD de categorias com valor da diária
-feat: implementa CRUD de veículos com validação de placa e chassi
-feat: padroniza navegação e visual dos cadastros e corrige preloader
-```
-
----
 
 <div align="center">
 
-Feito por <strong>Hitalo Guedes</strong> · Ciência da Computação · PUC Goiás
+Feito por <strong>Hitalo Augusto L. Guedes</strong> · Ciência da Computação · PUC Goiás
 
 </div>
