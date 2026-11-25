@@ -1,10 +1,10 @@
 <div align="center">
 
-#  MEGA MOTORS
+# 🚗 MEGA MOTORS
 
 ### Sistema de Locação de Veículos
 
-Aplicação web para gerenciar uma locadora: frota, clientes e todo o ciclo de locação, da retirada à devolução.
+Aplicação web para gerenciar a frota, os clientes e todo o ciclo de locação, da retirada do veículo à devolução, ao pagamento e à emissão da nota fiscal simulada.
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&style=for-the-badge)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white&style=for-the-badge)
@@ -17,213 +17,190 @@ Aplicação web para gerenciar uma locadora: frota, clientes e todo o ciclo de l
 
 ---
 
-##  Autor
+## 👤 Autor
 
-**Hitalo Augusto Lourenço Guedes**
-Ciência da Computação · PUC Goiás
-Atividade de laboratório: Sistema de Locação de Veículos (React · TypeScript · Bootstrap · JSON Server)
+**Hitalo Augusto Lourenço Guedes**  
+Ciência da Computação · PUC Goiás  
+Atividade de laboratório — Sistema de Locação de Veículos
 
----
-| MEGA MOTORS 
+| MEGA MOTORS |
 | :---: |
-| ![Preloader](./src/assets/image.png) |
----
+| ![Home da MEGA MOTORS](./src/assets/image.png) |
 
+## 📌 Status do projeto
 
-##  Status do projeto
-
-O projeto está sendo construído **passo a passo**. Esta é a **Etapa 1: a tela inicial (Home)**, já consumindo dados reais da API.
+O MEGA MOTORS reúne os cadastros de marcas, categorias, modelos, veículos, manutenções e clientes. O módulo de locações conecta esses dados para calcular o valor previsto, acompanhar o contrato, registrar vistorias e pagamentos e controlar quando o veículo pode ser alugado novamente.
 
 | Etapa | Conteúdo | Status |
 | :---: | --- | :---: |
-| 1 | Home imersiva, preloader, Navbar, serviços de leitura | ✅ Concluída |
-| 2 | Cadastros básicos: marcas, categorias, modelos (RF01–RF03) | ⏳ Próxima |
-| 3 | Veículos, manutenções e clientes (RF04–RF06) | ⬜ Planejada |
-| 4 | Processo de locação, vistorias, pagamentos e nota fiscal (RF07–RF13) | ⬜ Planejada |
-| 5 | Consultas, filtros e regras de negócio (RF14–RF16, RN01–RN06) | ⬜ Planejada |
+| 1 | Home, preloader, navegação e catálogo integrado à API | ✅ Implementada |
+| 2 | Cadastros de marcas, categorias e modelos | ✅ Implementada |
+| 3 | Cadastros de veículos, manutenções e clientes | ✅ Implementada |
+| 4 | Locação, contrato, vistorias, pagamentos e nota fiscal simulada | ✅ Implementada |
+| 5 | Consultas, filtros e controle de disponibilidade | ✅ Implementada |
 
----
+## 🚀 Como executar
 
-##  O que tem na Home
+**Versão recomendada:** Node.js 22.13 ou mais recente da linha 22 LTS, com npm.
 
-- **Preloader "Largada":** um velocímetro com o ponteiro tremendo em marcha lenta e o nome da marca se enchendo conforme o progresso. Quando os dados chegam, o ponteiro pisa fundo, estoura a zona vermelha, a tela dá um flash e as duas metades se abrem.
-- **Hero imersivo:** o título "MEGA MOTORS" entra letra por letra. Ao rolar, o hero fica fixo (pin) enquanto o carro cresce em direção à tela e o título some atrás dele.
-- **Catálogo vindo da API:** categorias com o valor da diária e os destaques da frota, ligando veículo → modelo → marca/categoria.
-- **Seções animadas com ScrollTrigger:** Sobre, Categorias e diárias, Destaques da frota, Como funciona a locação e chamada final.
-- **Tratamento de erro:** se o JSON Server estiver fora do ar, a Home avisa e oferece o botão "Tentar novamente".
-- **Responsiva** com Bootstrap, do celular ao desktop.
-- **Acessível:** respeita `prefers-reduced-motion` (sem pin, sem tremor, sem transições longas), com título legível por leitores de tela e imagens com `alt`.
-
-
-##  Tecnologias
-
-| Tecnologia | Uso no projeto |
-| --- | --- |
-| **React + Vite** (template `react-ts`) | Interface da aplicação |
-| **TypeScript** (modo `strict`, sem `any`) | Tipagem de props, models e serviços |
-| **React Router** | Navegação entre as páginas |
-| **Bootstrap** | Layout e responsividade |
-| **Axios** | Requisições HTTP, concentradas na camada `service` |
-| **JSON Server 0.17.4** | API REST simulada a partir do `db.json` |
-| **GSAP, ScrollTrigger e @gsap/react** | Preloader, entrada do hero, parallax e revelação das seções |
-
----
-
-##  Como executar
-
-**Pré-requisito:** Node.js 20 ou superior.
-
-Na pasta que contém o `package.json`:
+Na pasta que contém o `package.json`, instale as dependências na primeira execução:
 
 ```bash
-# 1. instalar as dependências
 npm install
-
-# 2. subir a API (JSON Server em http://localhost:3001)
-npm run server
 ```
 
-Em **outro terminal**, na mesma pasta:
+Para iniciar o sistema:
 
 ```bash
-# 3. subir a aplicação
-npm run dev
+npm start
 ```
 
-Abra a URL **Local** exibida pelo Vite (geralmente `http://localhost:5173`).
+O `concurrently` inicia a API e o Vite no mesmo terminal. A API usa a porta `3001` e o Vite abre a Home no navegador. Se precisar abrir a aplicação manualmente, use o endereço **Local** exibido no terminal, geralmente [http://localhost:5173](http://localhost:5173).
 
-Para verificar o TypeScript e gerar a versão de produção:
-
-```bash
-npm run build
-```
-
-> ⚠️ Se a Home mostrar "Não foi possível carregar a frota", confira se `npm run server` está rodando.
+Para encerrar os dois processos, pressione `Ctrl+C` no terminal. Se a Home exibir **“Não foi possível carregar a frota”**, confira se a API iniciou e clique em **Tentar novamente**.
 
 ### Scripts disponíveis
 
-| Script | O que faz |
+| Comando | Função |
 | --- | --- |
-| `npm run dev` | Inicia o Vite em modo de desenvolvimento |
-| `npm run server` | Inicia o JSON Server na porta 3001 |
-| `npm run build` | Valida os tipos e gera o build de produção |
+| `npm start` | Inicia a API e a interface no mesmo terminal |
+| `npm run server` | Executa a API pelo arquivo `servidor.cjs` |
+| `npm run dev` | Inicia o Vite em modo de desenvolvimento e abre o navegador |
+| `npm run build` | Verifica o TypeScript e gera a versão de produção em `dist/` |
+| `npm run preview` | Abre uma prévia do build. Para consultar os dados, execute a API também |
+| `npm run lint` | Verifica o código com ESLint |
 
----
+## ✨ O que tem na Home
+
+- **Preloader “Largada”.** Um velocímetro acompanha o carregamento enquanto o nome MEGA MOTORS ganha preenchimento. Quando os dados ficam prontos, o ponteiro acelera, a tela dá um flash e as duas metades se abrem para revelar a Home.
+- **Hero imersivo.** O título entra letra por letra. Ao rolar a página, a seção fica fixa por um momento enquanto o carro cresce em direção à tela.
+- **Catálogo vindo da API.** A Home mostra as categorias com os valores das diárias e os destaques da frota. Para montar cada destaque, relaciona o veículo ao modelo, à marca e à categoria.
+- **Seções animadas.** O ScrollTrigger controla as animações das seções Sobre, Categorias e diárias, Destaques da frota e Como funciona a locação.
+- **Navegação compartilhada.** O cabeçalho reúne a identidade MEGA MOTORS, a logo da PUC Goiás, o menu de módulos e o acesso a Locações.
+- **Responsividade e acessibilidade.** O layout se adapta do celular ao desktop. As animações respeitam `prefers-reduced-motion`, e as imagens informativas têm texto alternativo.
+
+## 🧭 Funcionalidades implementadas
+
+| Módulo | O que o usuário pode fazer |
+| --- | --- |
+| **Marcas** | Cadastrar a marca e escolher visualmente sua logo |
+| **Categorias** | Cadastrar categorias e definir o valor da diária de cada uma |
+| **Modelos** | Vincular cada modelo à sua marca e categoria |
+| **Veículos** | Cadastrar placa, chassi, cor e modelo e selecionar uma foto da galeria da frota |
+| **Manutenções** | Registrar e consultar manutenções vinculadas aos veículos |
+| **Clientes** | Cadastrar os clientes e seus dados de identificação e habilitação |
+| **Locações** | Selecionar cliente, veículo e período, consultar o contrato e acompanhar vistorias, pagamentos e nota fiscal simulada |
+| **Consultas** | Filtrar locações por cliente e status, consultar detalhes e acompanhar a disponibilidade da frota |
+
+## 🔑 Fluxo de uma locação
+
+1. **Escolha do veículo.** Selecione o cliente, o veículo disponível e o período da locação. A tela apresenta a foto do carro, a logo da marca e o valor da diária.
+2. **Cálculo e registro.** O sistema calcula o valor previsto multiplicando a quantidade de diárias pela tarifa da categoria. Com a locação registrada, o contrato fica disponível para consulta e o veículo passa a constar como alugado.
+3. **Retirada e devolução.** Registre a vistoria de retirada e, quando receber o carro de volta, a vistoria final.
+4. **Pagamento e liberação.** Registre os pagamentos e acompanhe o saldo. O veículo volta a ficar disponível quando **as duas condições** forem atendidas: **vistoria de devolução registrada** e **saldo quitado**.
+5. **Nota fiscal simulada.** Com a devolução registrada e o pagamento concluído, é possível emitir o documento com os dados do cliente, do veículo, do período e do valor da locação. A nota tem finalidade acadêmica e não possui valor fiscal.
+
+## 🛠️ Tecnologias
+
+| Tecnologia | Uso no projeto |
+| --- | --- |
+| **React + Vite** | Interface da aplicação, ambiente de desenvolvimento e build |
+| **TypeScript** | Tipagem das propriedades dos componentes, entidades e serviços |
+| **React Router** | Navegação entre as páginas |
+| **Bootstrap** | Layout e responsividade |
+| **Axios** | Requisições HTTP concentradas na camada de serviços |
+| **JSON Server 0.17.4** | API REST com persistência em `db.json` |
+| **GSAP, ScrollTrigger e `@gsap/react`** | Animações do preloader, do hero e das seções da Home |
+| **concurrently** | Execução da API e do Vite com um único comando |
 
 ## 🗂️ Estrutura de pastas
 
-```
+```text
 locadora-veiculos/
-├── db.json                  # API simulada: uma coleção por entidade do MER
-├── package.json
-├── tsconfig.json
+├── db.json                 # Coleções e dados da aplicação
+├── servidor.cjs            # API e regras do ciclo de locação
+├── package.json            # Dependências e scripts
+├── tsconfig.json           # Configuração do TypeScript
 ├── README.md
 └── src/
-    ├── assets/              # imagens do hero
-    ├── components/          # componentes reutilizáveis (.tsx)
-    │   ├── Button.tsx
-    │   ├── Card.tsx
-    │   ├── Navbar.tsx
-    │   ├── Preloader.tsx    # preloader "Largada" (+ Preloader.css)
-    │   └── Preloader.css
-    ├── models/              # interfaces das entidades do MER (.ts)
-    │   ├── Marca.ts
-    │   ├── Categoria.ts
-    │   ├── Modelo.ts
-    │   └── Veiculo.ts
-    ├── pages/               # telas da aplicação
+    ├── assets/             # Imagens da Home, fotos da frota e logos
+    ├── components/         # Navegação, preloader e componentes reutilizáveis
+    ├── models/             # Interfaces das entidades
+    ├── pages/
     │   ├── Home.tsx
-    │   └── MegaHome.css
-    ├── service/             # comunicação com a API (.ts)
-    │   ├── api.ts           # instância base do Axios
-    │   └── *Service.ts      # um serviço por entidade
-    ├── App.tsx
-    └── main.tsx
+    │   ├── MegaHome.css
+    │   ├── marcas/
+    │   ├── categorias/
+    │   ├── modelos/
+    │   ├── veiculos/
+    │   ├── manutencoes/
+    │   ├── clientes/
+    │   └── locacoes/
+    ├── service/            # Instância do Axios e serviços por entidade
+    ├── Cadastros.css       # Estilos compartilhados pelas telas de cadastro
+    ├── App.tsx             # Rotas da aplicação
+    └── main.tsx            # Ponto de entrada
 ```
 
 ### Arquitetura em camadas
 
-```
- Página (pages)  ──►  Serviço (service)  ──►  API (JSON Server)
-       │                     │
-       └──── usa ────►  Models (models) e Componentes (components)
-```
+As **páginas** apresentam os dados e recebem as ações do usuário. Os **componentes** concentram elementos reutilizáveis, como campos, tabelas, alertas, modais e navegação. Os **serviços** fazem as requisições à API. Os **models** descrevem as entidades e seus relacionamentos em TypeScript.
 
-- As **páginas não fazem requisições HTTP**: todo acesso à API passa pelos serviços.
-- As **páginas não usam `<button>`, `<input>` ou `<select>` diretamente**: usam os componentes de `src/components`.
-- Os **models** tipam as entidades, incluindo as chaves estrangeiras (`marcaId`, `categoriaId`, `modeloId`).
+O arquivo `servidor.cjs` usa o JSON Server para acessar o `db.json` e aplicar regras nas operações de locação, vistoria, pagamento e emissão da nota simulada.
 
----
+## 🧩 Modelo de dados
 
-##  Modelo de dados (resumo)
+| Relacionamento | Significado |
+| --- | --- |
+| Marca → Modelo | Uma marca pode ter vários modelos |
+| Categoria → Modelo | A categoria do modelo determina o valor da diária |
+| Modelo → Veículo | Vários veículos da frota podem pertencer ao mesmo modelo |
+| Veículo → Manutenção | Um veículo pode reunir vários registros de manutenção |
+| Cliente → Locação | Um cliente pode realizar várias locações |
+| Veículo → Locação | Um veículo pode ter várias locações ao longo do tempo |
+| Locação → Contrato | Cada locação possui um contrato para consulta |
+| Locação → Vistoria | A locação reúne os registros de retirada e devolução |
+| Locação → Pagamento | Uma locação pode receber vários pagamentos até a quitação |
+| Locação → Nota fiscal | Cada locação pode gerar uma nota fiscal simulada |
 
-```
-Marca ──1:N──► Modelo ◄──N:1── Categoria (define o valor da diária)
-                 │
-                1:N
-                 ▼
-              Veículo ──1:N──► Manutenção
-                 │
-                1:N
-                 ▼
-Cliente ──1:N──► Locação ──► Contrato (1:1)
-                    ├──────► Vistoria (1:N)
-                    ├──────► Pagamento (1:N)
-                    └──────► Nota Fiscal (1:0..1)
-```
-
-O `db.json` já traz uma coleção para cada entidade, em `camelCase` e com chaves estrangeiras no formato `<entidade>Id`, e dados de exemplo nos cadastros básicos.
-
----
+O `db.json` organiza os dados em coleções. As chaves estrangeiras seguem o formato `<entidade>Id`, como `marcaId`, `categoriaId`, `modeloId` e `veiculoId`.
 
 ## ⚙️ Detalhes de implementação
 
-- **Preloader com progresso real:** o ponteiro sobe até 92% enquanto os dados carregam. Quando a consulta termina e o tempo mínimo passou (850 ms), ele acelera até 100% e abre as cortinas. A Home começa a animar por baixo das cortinas, sem piscar.
-- **Animações sem vazamento:** `useGSAP` e `gsap.matchMedia()` revertem todas as animações ao sair da rota.
-- **Dados da Home:** a busca fica em um hook (`useCatalogo`) com `AbortController`, e o relacionamento veículo → modelo → marca/categoria é calculado uma vez com `useMemo`.
-- **Paleta:** o azul do céu do hero e o laranja dos bancos do carro como cor de destaque. As cores ficam nas variáveis `:root` do `MegaHome.css`.
+- **Preloader sincronizado com a API.** O indicador avança enquanto o catálogo carrega. Quando a consulta termina e o tempo mínimo da animação é atingido, o velocímetro completa o percurso e as cortinas se abrem.
+- **Ciclo das animações.** `useGSAP` e `gsap.matchMedia()` organizam as animações e sua limpeza ao sair da rota.
+- **Dados da Home.** O hook `useCatalogo` busca os dados com suporte a cancelamento por `AbortController`. A Home usa `useMemo` para relacionar veículos, modelos, marcas e categorias.
+- **Identidade visual.** O azul do hero e o laranja dos detalhes aparecem na Home e orientam o visual das demais telas. Na locação, a foto do carro e a logo da marca ajudam a identificar o veículo selecionado.
 
----
+## ✅ Checklist do projeto
 
-## ✅ Checklist do enunciado
+- [x] Projeto criado com Vite, React e TypeScript
+- [x] React Router, Bootstrap e Axios integrados
+- [x] API com JSON Server e persistência em `db.json`
+- [x] Execução da interface e da API com `npm start`
+- [x] Organização em `components`, `models`, `pages` e `service`
+- [x] Componentes reutilizáveis e propriedades tipadas
+- [x] Acesso à API concentrado nos serviços
+- [x] Cadastros de marcas, categorias, modelos, veículos, manutenções e clientes
+- [x] Locação com cálculo de diárias, contrato, vistorias e pagamentos
+- [x] Liberação do veículo após a devolução e a quitação
+- [x] Emissão de nota fiscal simulada
+- [x] Consultas e filtros de locações
 
-- [x] Projeto criado com Vite (`react-ts`)
-- [x] Todos os arquivos de `src/` em `.ts` / `.tsx`, sem `any`
-- [x] React Router, Bootstrap e Axios
-- [x] JSON Server com `db.json` na raiz e script `server`
-- [x] Estrutura `components / models / pages / service`
-- [x] Props dos componentes tipadas com `interface`
-- [x] Páginas sem requisições HTTP diretas
-- [ ] Componentes `Input`, `Select`, `TextArea`, `Table<T>`, `Modal` e `Alert` (próximas etapas)
-- [ ] Cadastros (RF01–RF06), locação (RF07–RF13) e consultas (RF14–RF16)
-- [ ] Regras de negócio RN01–RN06
+## 📝 Histórico de commits
 
----
+O desenvolvimento foi organizado em commits por funcionalidade. Alguns exemplos:
 
-##  Roadmap
-
-1. Cadastros de **marcas**, **categorias** e **modelos**, com `Select` de marca e categoria.
-2. Cadastros de **veículos**, **manutenções** e **clientes**, com validação de placa, chassi, CPF e CNH únicos.
-3. **Locação**: valor previsto automático (diárias × valor da categoria), contrato gerado, vistorias, pagamentos e nota fiscal.
-4. **Consultas**: filtro por status e cliente, detalhes da locação e disponibilidade dos veículos.
-5. Regras de negócio e mensagens ao usuário (veículo já locado, CNH vencida, exclusão com dependentes).
-
----
-
-##  Histórico de commits
-
-O desenvolvimento segue commits pequenos, no padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/):
-
-```
-feat: cria home da locadora com catálogo da API e animações GSAP
-feat: adiciona preloader com velocímetro
-style: novo visual da home e hero com título animado
+```text
+feat: implementa CRUD de categorias com valor da diária
+feat: implementa CRUD de veículos com validação de placa e chassi
+feat: padroniza navegação e visual dos cadastros e corrige preloader
 ```
 
 ---
 
 <div align="center">
 
-Feito por **Hitalo Guedes** · PUC Goiás
+Feito por <strong>Hitalo Guedes</strong> · Ciência da Computação · PUC Goiás
 
 </div>
